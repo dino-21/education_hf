@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ECMAScript6</title>  
+</head>
+<body style="text-align: center;">
+  <h1> AJAX 기술로 날씨 요청</h1>
+  <button onclick="ajaxW()">현재 날씨 정보를 요청하자</button>
+  <hr>
+  <br>
+  <img src="" width="200">
+  <script>
+    function ajaxW() {
+      fetch('http://localhost:8000/weather')
+      .then(response => {
+        if (!response.ok) throw new Error(response.statusText);
+        return response.json();
+      })
+      .then(today => {
+        console.log(`../images/${today.img}`);
+        document.querySelector("img").src = `../images/${today.img}`;
+      })
+      .catch(err => console.error(err));   
+    } 
+  </script>
+  
+</body>
+</html>

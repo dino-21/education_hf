@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <style>
+      h1, div {
+        text-align : center;
+      }
+      button {
+        border-radius: 5px;
+        font-size: 16px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        margin-bottom: 5px;
+      }
+      output {
+        text-align : left;
+        display : block;
+        width : 600px;
+        height : 100px;
+        background-color: #0897f681;
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 5px;
+        font-size: 16px;
+        margin : 5px auto;
+      }    
+    </style>
+  </head>
+  <body>
+    <h1>마스크 언어 모델</h1>
+    <hr>
+    <div>
+      <button>This course will teach you all about <mark>[MASK]</mark> models</button>
+      <button>The <mark>[MASK]</mark> gave me a refreshing feeling.</button>
+      <button><mark>[MASK]</mark> become food for our minds. <mask> models</button>
+    <div>
+    <hr>
+    <output></output>  
+    <script type="module">
+      import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+      const unmasker = await pipeline('fill-mask', 'Xenova/bert-base-cased');
+      const output1 = await unmasker('The goal of life is [MASK].');  
+      console.log(output1)        
+      const output2 = await unmasker('The goal of life is [MASK].', {topk : 1 });
+      console.log(output2)
+
+      async function process(e) {      
+        const output = await unmasker(e.target.textContent, {topk : 3});
+        const target = document.getElementsByTagName("output")[0];
+
+        let result = "<ul>";
+        for(let i in output)  
+          result += "<li>"+output[i]["sequence"]+"</li>";
+        result += "</ul>";
+        target.innerHTML = result;
+      }
+      const btns = document.getElementsByTagName("button");
+      for(let btn of btns){
+        btn.addEventListener("click", process);
+      }
+    </script>
+  </body>
+</html>

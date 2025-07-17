@@ -1,0 +1,21 @@
+{
+  "name" : "둘리인형",
+  "description" : "부드러운 느낌의 봉제인형",
+  "price" : 20000,
+  "tax" : 0.2
+}
+
+http://localhost:8000/items/100
+
+{
+  "name" : "또치인형",
+  "price" : 30000
+}
+
+
+{
+  "name" : "군고구마",  
+  "price" : 2000  
+}
+
+http://localhost:8000/items/100?q=겨울간식

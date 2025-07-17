@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <style>
+      body {
+        text-align : center;
+      }
+      button {
+        border-radius: 5px;
+        font-size: 16px;
+        padding: 5px;
+        background-color: #f9f9f9;
+        margin: 10px;
+      }
+      output {    
+        display : inline-block;
+        width : 500px;   
+        height : auto;
+        background-color: #0897f681;
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 5px;
+        font-size: 16px;
+        margin : 20px;
+        color : red;
+      }   
+      input {
+        padding : 10px;
+      } 
+    </style>
+  </head>
+  <body>
+    <h1>한영 번역(Translation) 테스트</h1>
+    <hr>
+    <h2>한글을 영문으로 번역해요</h2>
+    <button>5월은 행사가 많다. 어린이날, 어버이날 등...</button><br>
+    <output></output>
+    <hr>
+    <input type="text" size="80" placeholder="영문으로 번역하고 싶은 한글 문장을 입력하세요.">
+    <button>번역</button><br>
+    <output></output>
+    <script type="module">
+      import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+      const translator = await pipeline('translation', 'Xenova/opus-mt-ko-en');
+      
+      const btn = document.getElementsByTagName("button");
+      const inp = document.getElementsByTagName("input")[0];
+      const out = document.getElementsByTagName("output");
+      btn[0].addEventListener("click", async function(e) {
+        const output = await translator(e.target.textContent);
+        out[0].textContent = output[0]['translation_text'];
+        console.log(output);
+      })
+      btn[1].addEventListener("click", async function(e) {
+        const output = await translator(inp.value);
+        out[1].textContent = output[0]['translation_text'];
+      })
+    </script>
+  </body>
+</html>

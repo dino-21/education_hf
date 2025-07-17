@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summary Generator</title>
+    <link rel="stylesheet" href="asset/styles5.css">
+    <script type="module">
+      import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+  
+      const summarization = await pipeline('summarization', 'Xenova/t5-base');
+      const longTextInput = document.getElementById('long-text-input');
+      const generateButton = document.getElementById('generate-button');
+      const output = document.getElementById('output-div');
+      const spinner = document.getElementById('spinner');
+
+
+      generateButton.addEventListener('click', async () => {
+      spinner.classList.add('show');
+      generateButton.setAttribute("disabled", true);
+
+      const input = longTextInput.value;
+      const result = await summarization(input, {
+        min_length: 50, max_length: 250,
+      });
+
+      output.innerHTML = result[0].summary_text;
+      spinner.classList.remove('show');
+      generateButton.removeAttribute("disabled");
+      output.style.display = 'block';
+    });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <textarea id="long-text-input" placeholder="Enter your copy here..."></textarea>
+        <button id="generate-button">
+          <span id="spinner">🔄</span> Generate Summary
+        </button>
+        <div id="output-div"></div>
+    </div>
+</body>
+</html>
